@@ -64,6 +64,24 @@
         ::-webkit-scrollbar-track { background: #1a1a2e; }
         ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
 
+        /* ==================== DESKTOP ENFORCEMENT SHIELD ==================== */
+        #desktopShield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #0a0a1a;
+            z-index: 999999;
+            display: none; /* Injected via JS screen validation check */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+        }
+        .shield-icon { font-size: 80px; margin-bottom: 20px; animation: heartbeat 2s infinite; }
+        .shield-title { font-family: 'Poppins', sans-serif; font-size: 24px; color: var(--pink); margin-bottom: 15px; }
+        .shield-text { font-family: 'Poppins', sans-serif; font-size: 16px; color: rgba(255,255,255,0.7); max-width: 450px; line-height: 1.6; }
+
         /* ==================== PAGE CUT INTRO OVERLAY ==================== */
         #cutWrapper {
             position: fixed;
@@ -816,6 +834,23 @@ Love you forever and always ♾️ 🖤
     </div>
 
     <script>
+
+        // ===== DESKTOP ONLY SCREEN GATEKEEPER WALL =====
+        function checkDeviceResolution() {
+            const shield = document.getElementById('desktopShield');
+            // If screen width is less than 1024px (Mobiles/Tablets), lock it out completely
+            if (window.innerWidth < 1024) {
+                shield.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                shield.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+        // Run immediately on initialization and register resize events
+        checkDeviceResolution();
+        window.addEventListener('resize', checkDeviceResolution);
+        
         // ===== SECURITY CORE (DISABLE INSPECT & RIGHT CLICK) =====
         document.addEventListener('contextmenu', (e) => e.preventDefault());
 
